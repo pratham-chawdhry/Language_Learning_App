@@ -9,14 +9,18 @@ import lombok.Data;
 public class User {
     private String username;
     private String email;
-    private String password;  // Ideally hashed, but plain here for simplicity
+    private String password;  
     private int level;
     private int experiencePoints;
     private int totalCorrectAnswers;
     private int totalQuestionsAnswered;
-    private int coins; // Can be used as an in-game currency
-    private int streakCount; // For daily streaks
-    private List<String> learnedLanguages; // List of languages the user has learned or is learning
+    private int coins;
+    private int streakCount;
+    private List<String> learnedLanguages;
     private boolean isActive;
     private UserProgress userProgress;
+    private List<String> favoriteTopics;
+    private String profilePictureUrl;
+    private List<String> friends;
+    private List<String>RevisedExercises;
 }
