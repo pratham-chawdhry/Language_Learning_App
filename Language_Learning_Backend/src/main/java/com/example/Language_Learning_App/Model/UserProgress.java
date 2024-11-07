@@ -1,21 +1,22 @@
 package com.example.Language_Learning_App.Model;
 
-import java.util.List;
-
-import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "user_progress")  // Specify the table name explicitly
 public class UserProgress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @Column(name = "current_level", nullable = false)
     private int currentLevel;
-    private List<Exercise> unlockedExercises;
+
+    // Constructors, getters, setters, if needed
 }

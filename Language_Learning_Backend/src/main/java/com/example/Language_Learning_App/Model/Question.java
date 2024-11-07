@@ -2,10 +2,14 @@ package com.example.Language_Learning_App.Model;
 
 import java.util.List;
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
@@ -13,7 +17,9 @@ import lombok.Data;
 @Data
 @Entity
 public class Question {
-    private String questionId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String questionText;
     private String correctAnswer;
     @ElementCollection  // Used to store a list of simple values (options in this case)
