@@ -17,14 +17,14 @@ public class User {
     private Long id;
     private String username;
     private String email;
-    private String password;  // Ideally hashed, but plain here for simplicity
+    private String password;  
     private int level;
     private int experiencePoints;
     private int totalCorrectAnswers;
     private int totalQuestionsAnswered;
-    private int coins; // Can be used as an in-game currency
-    private int streakCount; // For daily streaks
-    private List<String> learnedLanguages; // List of languages the user has learned or is learning
+    private int coins;
+    private int streakCount;
+    private List<String> learnedLanguages;
     private boolean isActive;
     @OneToOne(mappedBy = "user")
     private UserProgress userProgress;

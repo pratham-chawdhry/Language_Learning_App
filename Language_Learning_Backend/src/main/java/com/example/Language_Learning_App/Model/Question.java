@@ -22,11 +22,11 @@ public class Question {
     private Long id;
     private String questionText;
     private String correctAnswer;
-    @ElementCollection  // Used to store a list of simple values (options in this case)
+    @ElementCollection  
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option_value")
-    private List<String> options;  // List of answer options for the question
-    @ManyToOne
-    @JoinColumn(name = "exercise_id", nullable = false)  // Foreign key to associate with Exercise
-    private Exercise exercise;  // The exercise to which this question belongs
+    private List<String> options;  
+    @ManyToOne //
+    @JoinColumn(name = "exercise_id", nullable = false) 
+    private Exercise exercise;  
 }
