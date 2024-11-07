@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView } from 'react-native';
 import React from 'react';
-
 const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
