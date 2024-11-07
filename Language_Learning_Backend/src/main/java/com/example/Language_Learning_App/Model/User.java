@@ -2,8 +2,10 @@ package com.example.Language_Learning_App.Model;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 @Data
+@Entity
 public class User {
     private String username;
     private String email;
@@ -14,5 +16,7 @@ public class User {
     private int totalQuestionsAnswered;
     private int coins; // Can be used as an in-game currency
     private int streakCount; // For daily streaks
-    private List<Language> learnedLanguages; // List of languages the user has learned or is learning
+    private List<String> learnedLanguages; // List of languages the user has learned or is learning
+    private boolean isActive;
+    private UserProgress userProgress;
 }
