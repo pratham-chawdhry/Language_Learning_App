@@ -45,7 +45,7 @@ const JumbledSentence = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    // <ScrollView contentContainerStyle={styles.contentContainer}>
     <View style={styles.container}>
       <Text style={styles.title}>Arrange the words:</Text>
 
@@ -97,13 +97,12 @@ const JumbledSentence = () => {
       {/* Display unselected words below */}
 
       {/* Check Answer Button */}
-      <View style={styles.buttonsContainer}>
+      <View style={styles.bottomContainer}>
         <TouchableOpacity style={styles.button} onPress={checkAnswer}>
           <Text style={styles.buttonText}>Check Answer</Text>
         </TouchableOpacity>
       </View>
     </View>
-    </ScrollView>
   );
 };
 
@@ -113,13 +112,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',  // Make the container take full screen
   },
   container: {
+    // flex: 1,
+    // padding: 20,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: '#f5f5f5',
+    // position: 'absolute',
+    // height: '100%',
     flex: 1,
     padding: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#f5f5f5',
-    position: 'absolute',
-    height: '100%',
+    flexDirection: 'column',
   },
   selectedSentenceContainer: {
     flexDirection: 'row',
@@ -183,6 +188,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
   },
+  bottomContainer: {
+    flexGrow: 1,  // Allow the middle content to take up available space
+    justifyContent: 'flex-end',  // Push the button to the bottom
+    width: '100%',
+  },
   buttonsContainer: {
     flexGrow: 1,  // Allow the middle content to take up available space
     justifyContent: 'flex-end',  // Push the button to the bottom
@@ -193,10 +203,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 8,
-    position: 'relative',  // Position the button at the bottom
-    bottom: 20,  // 20px from the bottom of the screen
-    left: '10%',
-    right: '10%',  // Ensure it stays in the center horizontally
     alignItems: 'center',
   },
   buttonText: {
