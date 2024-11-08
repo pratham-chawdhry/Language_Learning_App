@@ -96,7 +96,12 @@ const styles = StyleSheet.create({
   pronounciationIcon: {
     color: '#fff',
     fontSize: 20,
-  }
+  },
+  bottomContainer: {
+    flexGrow: 1,  // Allow the middle content to take up available space
+    justifyContent: 'flex-end',  // Push the button to the bottom
+    width: '100%',
+  },
 });
 
 export default App;

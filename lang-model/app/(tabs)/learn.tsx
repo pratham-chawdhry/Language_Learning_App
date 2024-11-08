@@ -53,7 +53,7 @@ const JumbledSentence = () => {
         {availableWords.map((word, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.word}
+              style={[styles.word,{backgroundImage: 'linear-gradient(45deg, #4F1DAE, #7e3ffb, #9D6CFF)',}]}
               onPress={() => selectWord(word)} // Toggle selection
             >
               <Text style={styles.wordText}>{word.word}</Text>
@@ -79,24 +79,6 @@ const JumbledSentence = () => {
         ))}
 
       </View>
-{/* 
-      <View style={styles.selectedWordsContainer}>
-        {selectedWords.map((word) => (
-          word.selected ? (
-            <TouchableOpacity
-              key={word.id}
-              style={styles.selectedWord}
-              onPress={() => selectWord(word.id)} // Toggle selection
-            >
-              <Text style={styles.wordText}>{word.word}</Text>
-            </TouchableOpacity>
-          ) : null
-        ))}
-      </View> */}
-
-      {/* Display unselected words below */}
-
-      {/* Check Answer Button */}
       <View style={styles.bottomContainer}>
         <TouchableOpacity style={styles.button} onPress={checkAnswer}>
           <Text style={styles.buttonText}>Check Answer</Text>
