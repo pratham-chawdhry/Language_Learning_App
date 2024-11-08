@@ -9,7 +9,6 @@ import "@/assets/images/Flag-Spain.webp";
 import "@/assets/images/Flag-Portugal.webp";
 import Svg, { Path } from 'react-native-svg';
 
-
 const screenWidth = Dimensions.get('window').width;
 
 const DATA = [
