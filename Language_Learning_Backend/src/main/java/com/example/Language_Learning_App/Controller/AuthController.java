@@ -56,6 +56,7 @@ public class AuthController {
         user2.setRole(user.getRole());
         System.out.println(user.getPassword());
         user2.setPassword(passwordEncoder.encode(user.getPassword()));
+        user2.setActive(true);
         User saved_user = userRepository.save(user2);
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(saved_user.getRole().toString()));
