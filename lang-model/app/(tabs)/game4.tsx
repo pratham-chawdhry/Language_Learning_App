@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView} from 'react-native';
 import { GiSpeaker } from 'react-icons/gi';
+import Tts from '../../components/tts';
 
-const translation = "The students must learn to work together to improve their language skills."
-const targetSentence = "Les étudiants doivent apprendre à travailler ensemble pour améliorer leurs compétences linguistiques.";
+const targetSentence = "The students must learn to work together to improve their language skills."
+const translation = "Les étudiants doivent apprendre à travailler ensemble pour améliorer leurs compétences linguistiques.";
 const wordsArray = targetSentence.split(" ").map((word, index) => ({
     id: index,
     word: word
@@ -46,26 +47,16 @@ const JumbledSentence = () => {
     }
   };
 
-  const sentenceParts = translation.split(" ").map((word, index) => {
-    // Add to leftString until the blank word is found
-    return word;
-  });
-
   return (
     // <ScrollView contentContainerStyle={styles.contentContainer}>
     <View style={styles.container}>
-      <Text style={styles.title}>Arrange the words:</Text>
-
-      <View style = {[styles.sentence,{marginTop: -20}]}>
-        {
-          sentenceParts.map((word, index) => (
-            <Text key={index} style={styles.wordSentences}>{word}{" "}</Text>
-          ))
-        }
-      </View>
+        <View className="flex flex-row justify-center items-center gap-1">
+            <Text style={styles.title}>Arrange the words:</Text>
+            <Tts textFrom={translation} languageFrom="french" IconStyle={styles.pronounciationIcon} />
+        </View>
 
 
-      <View style={[styles.sentenceContainer,{marginTop: -20}]}>
+      <View style={styles.sentenceContainer}>
         {availableWords.map((word, index) => (
             <TouchableOpacity
               key={index}
@@ -118,7 +109,10 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // height: '100%',
     flex: 1,
-    padding: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 5,
+    paddingRight: 5,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#f5f5f5',
@@ -138,7 +132,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
   },
   sentenceContainer: {
     flexDirection: 'row',
@@ -228,19 +221,10 @@ const styles = StyleSheet.create({
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
 
   },
-  sentence: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 20,
-    width: '100%',
-    padding: 10,
-    borderRadius: 8,
-    gap: 5,
-    alignItems: 'flex-end', // Aligns items to the bottom in the row
+  pronounciationIcon: {
+    color: ' #4F1DAE',
+    fontSize: 20,
   },
-  wordSentences: {
-    fontSize: 15,
-  } ,
 });
 
 export default JumbledSentence;

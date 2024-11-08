@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { View, TextInput, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Alert, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Audio } from 'expo-av';
 import { fromByteArray } from 'base64-js';
+import { GiSpeaker } from 'react-icons/gi';
 
-const PlayHTTextToSpeech = () => {
-  const [text, setText] = useState('');
-  const [language, setLanguage] = useState('german');
+const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
+  const [text, setText] = useState(textFrom || '');
+  const [language, setLanguage] = useState(languageFrom || 'english');
   const [isLoading, setIsLoading] = useState(false);
   const [sound, setSound] = useState(null);
+  console.log(text, language);
 
   const generateFrenchAudio = async () => {
     if (!text) {
@@ -23,7 +25,7 @@ const PlayHTTextToSpeech = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text, language }),
+        body: JSON.stringify({ text }),
       });
 
       if (!response.ok) {
@@ -55,20 +57,17 @@ const PlayHTTextToSpeech = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter text in French"
-        value={text}
-        onChangeText={setText}
-      />
       <TouchableOpacity
-        style={[styles.button, isLoading ? styles.buttonDisabled : null]}
         onPress={generateFrenchAudio}
         disabled={isLoading}
       >
-        <Text style={styles.buttonText}>
-          {isLoading ? 'Generating...' : 'Generate French Audio'}
-        </Text>
+        <View style={IconStyle}>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#0000ff" />
+          ) : (
+            <GiSpeaker style={IconStyle} size={30} color="black" />
+          )}
+        </View>
       </TouchableOpacity>
     </View>
   );
