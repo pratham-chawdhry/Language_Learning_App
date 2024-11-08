@@ -19,7 +19,7 @@ public class User {
     private String email;
     private String password;  
     private int level;
-    private int experiencePoints;
+    private Long experiencePoints;
     private int totalCorrectAnswers;
     private int totalQuestionsAnswered;
     private int coins;

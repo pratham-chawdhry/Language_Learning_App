@@ -15,7 +15,7 @@ def generate_question():
     language = request.args.get('language')
 
     # Generate content from Gemini API
-    prompt = f"Create a {question_type} language learning question in {language}."
+    prompt = f"Create a {question_type} language learning question in {language}. and give all in json format mapping . json should be structured properly"
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
 
