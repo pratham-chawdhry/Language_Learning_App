@@ -1,61 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import * as Speech from 'expo-speech';
+import React, { useState } from 'react';
+import { View, TextInput, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Audio } from 'expo-av';
+import { fromByteArray } from 'base64-js';
 
-const YourComponent: React.FC = () => {
-  const [isReady, setIsReady] = useState(true); // Set it to true by default
-  const [isSpeaking, setIsSpeaking] = useState(false); // Track if the speech is active
+const PlayHTTextToSpeech = () => {
+  const [text, setText] = useState('');
+  const [language, setLanguage] = useState('german');
+  const [isLoading, setIsLoading] = useState(false);
+  const [sound, setSound] = useState(null);
 
-  // Function to start speaking in Spanish
-  const startHandler = () => {
-    if (isReady) {
-      Speech.stop(); // Ensure any previous speech is stopped
-      setIsSpeaking(true); // Start the loader
+  const generateFrenchAudio = async () => {
+    if (!text) {
+      Alert.alert('Error', 'Please enter some text');
+      return;
+    }
 
-      Speech.speak("Hoy ha muerto mamá. O quizá ayer, no lo sé.", {
-        language: 'es-ES', // Spanish language (Spain dialect, use 'es-MX' for Mexican Spanish)
-        pitch: 1,          // Default pitch
-        rate: 0.75,        // Speech rate
-        onDone: () => {
-          setIsSpeaking(false); // Stop the loader when speech is done
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/generate-audio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        onError: () => {
-          setIsSpeaking(false); // Stop the loader if there is an error
-          console.log("Error with speech");
-        }
+        body: JSON.stringify({ text, language }),
       });
-    } else {
-      console.log("Speech is not ready yet or available");
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorMessage}`);
+      }
+
+      const audioArrayBuffer = await response.arrayBuffer();
+      const base64Audio = `data:audio/mpeg;base64,${fromByteArray(new Uint8Array(audioArrayBuffer))}`;
+
+      const { sound: newSound } = await Audio.Sound.createAsync({ uri: base64Audio });
+      setSound(newSound);
+      await newSound.playAsync();
+    } catch (error) {
+      console.error('Error generating French audio:', error);
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Call checkSpeechAvailability when the component mounts (if needed for further platform-specific checks)
-  useEffect(() => {
-    if (typeof Speech.speak !== 'function') {
-      console.log("Speech is not available on this platform.");
-      setIsReady(false);
-    }
-  }, []);
-
-  // Function to stop speaking
-  const stopHandler = () => {
-    Speech.stop();
-    setIsSpeaking(false); // Stop the loader when stopped
-  };
+  React.useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={startHandler} disabled={isSpeaking}>
-        <Text style={styles.buttonText}>Sprechen</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter text in French"
+        value={text}
+        onChangeText={setText}
+      />
+      <TouchableOpacity
+        style={[styles.button, isLoading ? styles.buttonDisabled : null]}
+        onPress={generateFrenchAudio}
+        disabled={isLoading}
+      >
+        <Text style={styles.buttonText}>
+          {isLoading ? 'Generating...' : 'Generate French Audio'}
+        </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={stopHandler} disabled={!isSpeaking}>
-        <Text style={styles.buttonText}>Stopp</Text>
-      </TouchableOpacity>
-
-      {isSpeaking && (
-        <ActivityIndicator size="large" color="#3498db" style={styles.loader} />
-      )}
     </View>
   );
 };
@@ -65,23 +79,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    padding: 20,
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: 'red',
     padding: 15,
     borderRadius: 10,
-    marginVertical: 10,
-    width: '60%',
-    alignItems: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  loader: {
-    marginTop: 20,
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
-export default YourComponent;
+export default PlayHTTextToSpeech;
