@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
+    
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     // http.sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorize->authorize.requestMatchers("/api/admin/**").hasAnyRole("ADMIN","RESTAURANT_OWNER").requestMatchers("/api/**").authenticated().anyRequest().permitAll()).csrf(csrf->csrf.disable());
@@ -63,11 +65,14 @@ public class AppConfig {
 //     source.registerCorsConfiguration("/**", corsConfiguration);
 //     return source;
 // }
-
     @Bean
     PasswordEncoder passwordEncoder(){ 
         return new BCryptPasswordEncoder(); //whenever we want to encode password we will use this object of BCryptPasswordEncoder
     }
+    @Bean
+RestTemplate restTemplate() {
+    return new RestTemplate();
+}
 }
 // can i use this code for any project irrespective of the domain?
 // so using same code will implement security for any project? no need to change as it does not depend on any entity or domain?
