@@ -1,67 +1,116 @@
-import React from 'react';
-import { View, FlatList, StyleSheet, Text, StatusBar, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet, Text, StatusBar, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { GiSpeaker } from "react-icons/gi";
-import { G } from 'react-native-svg';
-
-const DATA = [
-    {id: '1', title: 'A', pronounciation : 'aaa'}
-    ,{id: '2', title: 'B', pronounciation : 'bey'}
-    ,{id: '3', title: 'C', pronounciation : 'cey'}
-    ,{id: '4', title: 'D', pronounciation : 'dey'}
-    ,{id: '5', title: 'E', pronounciation : 'ey'}
-    ,{id: '6', title: 'F', pronounciation : 'aef'}
-    ,{id: '7', title: 'G', pronounciation : 'ghay'}
-    ,{id: '8', title: 'H', pronounciation : 'ash'}
-    ,{id: '9', title: 'I', pronounciation : 'ey'}
-    ,{id: '10', title: 'J', pronounciation : 'ji'}
-    ,{id: '11', title: 'K', pronounciation : 'ka'}
-    ,{id: '12', title: 'L', pronounciation : 'el'}
-    ,{id: '13', title: 'M', pronounciation : 'em'}
-    ,{id: '14', title: 'N', pronounciation : 'en'}
-    ,{id: '15', title: 'O', pronounciation : 'oh'}
-    ,{id: '16', title: 'P', pronounciation : 'pey'}
-    ,{id: '17', title: 'Q', pronounciation : 'que'}
-    ,{id: '18', title: 'R', pronounciation : 'err'}
-    ,{id: '19', title: 'S', pronounciation : 'es'}
-    ,{id: '20', title: 'T', pronounciation : 'tey'}    
-    ,{id: '21', title: 'U', pronounciation : 'oo'}    
-    ,{id: '22', title: 'V', pronounciation : 've'}
-    ,{id: '23', title: 'W', pronounciation : 'doubbel-way'}
-    ,{id: '24', title: 'X', pronounciation : 'ex'}
-    ,{id: '25', title: 'Y', pronounciation : 'ee-greek'}
-    ,{id: '26', title: 'Z', pronounciation : 'zed'}
-];
+import { GiSpeaker } from 'react-icons/gi';
+import { Audio } from 'expo-av';
+import { fromByteArray } from 'base64-js';
 
 const screenWidth = Dimensions.get('window').width;
-const itemSize = 110; // Flexible width based on screen width (3 items per row with spacing)
+const itemSize = 110; // Width based on screen width (3 items per row with spacing)
+const API_URL = 'http://localhost:8080/question/generateCharacters?language=urdu';
+const TOKEN = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzEwODgwMDIsImV4cCI6MTczMTE3NDQwMiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.HqdEiYa1B_A3jI33OZRwTPlxoaH5oKOBDTpS-Eu0WWyH7CDaseVeDlb-_rA6pgb_';
 
-const Item = ({ title, prounciation }) => (
-  <View className = 'rounded-md' style={[styles.item, { width: itemSize, height: itemSize, boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)' }] }>
-    <View>
-        <GiSpeaker style={styles.pronounciationIcon} />
-    </View>
-    <Text style={styles.title}>{title}</Text>
-    <View className='flex flex-row justify-center items-center gap-3' style={{width: '100%'}}>
-        <View style={styles.pronounciationContainer}>
-        <Text style={styles.pronounciation}>{prounciation}</Text>
-        </View>
-    </View>
-  </View>
-);
+const App = () => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sound, setSound] = useState(null);
 
-const App = () => (
-  <SafeAreaProvider>
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <Item title={item.title}  prounciation={item.pronounciation}/>}
-        keyExtractor={(item) => item.id}
-        numColumns={Math.floor(screenWidth / itemSize)} // Dynamically set columns based on screen width
-      />
-    </SafeAreaView>
-  </SafeAreaProvider>
-);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Data fetched:', result);
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        Alert.alert('Error', 'Failed to load character data');
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const generateAudio = async (text, language = 'urdu') => {
+    if (!text) {
+      Alert.alert('Error', 'Text is missing for audio generation');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/generate-audio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text, language }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorMessage}`);
+      }
+
+      const audioArrayBuffer = await response.arrayBuffer();
+      const base64Audio = `data:audio/mpeg;base64,${fromByteArray(new Uint8Array(audioArrayBuffer))}`;
+
+      const { sound: newSound } = await Audio.Sound.createAsync({ uri: base64Audio });
+      setSound(newSound);
+      await newSound.playAsync();
+    } catch (error) {
+      console.error('Error generating audio:', error);
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
+
+  const Item = ({ title, pronunciation }) => (
+    <View style={[styles.item, { width: itemSize, height: itemSize }]}>
+      <TouchableOpacity onPress={() => generateAudio(pronunciation)}>
+        <GiSpeaker style={styles.pronunciationIcon} />
+      </TouchableOpacity>
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.pronunciationContainer}>
+        <Text style={styles.pronunciation}>{pronunciation}</Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <Item title={item.letter} pronunciation={item.pronunciation} />}
+          keyExtractor={(item, index) => item.id || index.toString()} // Ensuring unique key using 'id' or 'index'
+          numColumns={Math.floor(screenWidth / itemSize)}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -80,27 +129,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 5,
-    lineHeight: 44,
     textAlign: 'center',
   },
-  pronounciationContainer: {
+  pronunciationContainer: {
     borderBottomWidth: 3,
     borderBottomColor: '#fff',
     borderStyle: 'dotted',
   },
-  pronounciation: {
+  pronunciation: {
     fontSize: 12,
     color: '#fff',
     paddingBottom: 2,
   },
-  pronounciationIcon: {
+  pronunciationIcon: {
     color: '#fff',
     fontSize: 20,
-  },
-  bottomContainer: {
-    flexGrow: 1,  // Allow the middle content to take up available space
-    justifyContent: 'flex-end',  // Push the button to the bottom
-    width: '100%',
+    marginBottom: 5,
   },
 });
 

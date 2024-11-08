@@ -1,5 +1,8 @@
 package com.example.Language_Learning_App.Controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import com.example.Language_Learning_App.Request.TestEndRequest;
 import com.example.Language_Learning_App.Response.ArrangeQuestion;
 import com.example.Language_Learning_App.Response.FillintheBlank;
 import com.example.Language_Learning_App.Response.PassageQuestion;
+import com.example.Language_Learning_App.Response.Pronounciations;
 import com.example.Language_Learning_App.Response.SoundQuestion;
 import com.example.Language_Learning_App.Service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -216,20 +220,57 @@ public class QuestionController {
     }
 
     @GetMapping("/generateCharacters")
-    public ResponseEntity<String> generateCharacters(@RequestParam String language) {
+    public ResponseEntity<?> generateCharacters(@RequestParam String language) {
         String url = pythonApiUrl + "/generate_characters?language=" + language;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return ResponseEntity.ok(response.getBody());
+
+        try {
+            System.out.println("response.getBody() : " + response.getBody());
+
+            // Parse the main response body as a JSON node
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response.getBody());
+
+            // Extract the `characters` field as an embedded JSON array string
+            String charactersJsonString = rootNode.path("characters").asText();
+
+            // Parse the isolated JSON string into a List of Pronunciations objects
+            List<Pronounciations> pronunciationsList = objectMapper.readValue(
+                    charactersJsonString,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, Pronounciations.class));
+
+            // Remove slashes from `letter` and `pronunciation` fields
+            List<Pronounciations> cleanedList = pronunciationsList.stream()
+                    .map(pronunciation -> {
+                        // Remove slashes if they exist in the `letter` field
+                        if (pronunciation.getLetter() != null && pronunciation.getLetter().contains("/")) {
+                            pronunciation.setLetter(pronunciation.getLetter().replace("/", ""));
+                        }
+                        // Remove slashes if they exist in the `pronunciation` field
+                        if (pronunciation.getPronunciation() != null
+                                && pronunciation.getPronunciation().contains("/")) {
+                            pronunciation.setPronunciation(pronunciation.getPronunciation().replace("/", ""));
+                        }
+                        return pronunciation;
+                    })
+                    .collect(Collectors.toList());
+
+            // Return the cleaned list as JSON in the response
+            return ResponseEntity.ok(pronunciationsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error processing JSON response");
+        }
     }
 
     @PostMapping("/Endtest")
-    public ResponseEntity<?> Endtest(@RequestBody TestEndRequest testEndRequest, @RequestHeader("Authorization") String jwt) {
-        try{
+    public ResponseEntity<?> Endtest(@RequestBody TestEndRequest testEndRequest,
+            @RequestHeader("Authorization") String jwt) {
+        try {
             User user = userService.FindUserByJwt(jwt);
-            User user1 = userService.UpdateExpereince(user.getEmail(), testEndRequest.getNoofCorrectAnswers()*10);
+            User user1 = userService.UpdateExpereince(user.getEmail(), testEndRequest.getNoofCorrectAnswers() * 10);
             return ResponseEntity.ok().body(user1);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

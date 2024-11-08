@@ -27,7 +27,7 @@ def generate_characters():
     language = request.args.get('language')
 
     # Generate content from Gemini API to get characters
-    prompt = f"give number of alphabets in {language} language. give pronouqciation of each alphabet. in json format mapping"
+    prompt = f"Retrieve the complete alphabets of {language}, along with each letter's pronunciation. Please return the data as a JSON array where each object includes the letter and its pronunciation. Format each entry as: letter and pronounciation Repeat for all letters in the {language} alphabet. just return the json format no notes section and pronunciation limit to max 2 words"
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
     return jsonify({"characters": response.text})
