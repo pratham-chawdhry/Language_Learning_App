@@ -34,7 +34,7 @@ const DATA = [
 ];
 
 const screenWidth = Dimensions.get('window').width;
-const itemSize = screenWidth / 3 - 16; // Flexible width based on screen width (3 items per row with spacing)
+const itemSize = 110; // Flexible width based on screen width (3 items per row with spacing)
 
 const Item = ({ title, prounciation }) => (
   <View className = 'rounded-md' style={[styles.item, { width: itemSize, height: itemSize, boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)' }] }>
