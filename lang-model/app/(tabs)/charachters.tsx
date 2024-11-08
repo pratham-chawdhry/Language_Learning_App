@@ -7,7 +7,7 @@ import { fromByteArray } from 'base64-js';
 
 const screenWidth = Dimensions.get('window').width;
 const itemSize = 110; // Width based on screen width (3 items per row with spacing)
-const API_URL = 'http://localhost:8080/question/generateCharacters?language=urdu';
+const API_URL = 'http://localhost:8080/question/generateCharacters?language=hindi';
 const TOKEN = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzEwODgwMDIsImV4cCI6MTczMTE3NDQwMiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.HqdEiYa1B_A3jI33OZRwTPlxoaH5oKOBDTpS-Eu0WWyH7CDaseVeDlb-_rA6pgb_';
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
     fetchData();
   }, []);
 
-  const generateAudio = async (text, language = 'urdu') => {
+  const generateAudio = async (text, language = 'hindi') => {
     if (!text) {
       Alert.alert('Error', 'Text is missing for audio generation');
       return;
