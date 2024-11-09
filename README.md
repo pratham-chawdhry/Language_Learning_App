@@ -35,32 +35,39 @@ Welcome to the **Language Learning App**! This application provides an engaging 
    ```bash
    git clone https://github.com/pratham-chawdhry/Language_Learning_App.git
    cd Language_Learning_App
+   
 2. **Frontend Setup**
    Navigate to the frontend directory and install dependencies:
    ```bash
    cd lang-model
    npm i
    npx expo start -c
+   
 3. **Backend Setup**
    Navigate to the backend directory and set up the Spring Boot project:
-   ```bash
-   cd Language_Learning_Backend
-
    Now just click on the run button on the top right.
    Configure your MySQL database credentials in the application.properties file.
+   ```bash
+   cd Language_Learning_Backend
+   
 4. **Proxy-Server**
    To set up the proxy-Server
    ```bash
    cd proxy-server
    node server.mjs
+   
 5. **Gemini API**
    To set up the Gemini API, Just navigate to the corresponding directory and click on the run button.
-4. **Database Setup**
+   
+6. **Database Setup**
    -Ensure MySQL is running, and create the required database and tables.
    -Migrate initial schema if available or start with the Spring Boot project which may auto-configure tables.
-5. **Running The App**
-   -Start the backend server: Just click in the run button after navigating to the LanguageLearningAppApplicationTests.java
-   -Start the frontend React Native app:
+   
+7. **Running The App**
+   -**Start the backend server: Just click in the run button after navigating to the LanguageLearningAppApplicationTests.java**
+   -**Start the frontend React Native app**:
    ```bash
     cd lang-model
     npx expo start -c
+
+8. 
