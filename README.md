@@ -76,15 +76,25 @@ Welcome to the **Language Learning App**! This application provides an engaging 
 ## Architecture Overview
 
 ### Frontend (React Native)
-   - This module contains all UI components, navigation flows, and front-end logic, providing users with a seamless, engaging experience. With React Native, the app is cross-platform, ensuring a consistent look and feel on both iOS and Android devices. 
+   - The frontend of our Language Learning App is built using Expo and React Native, providing a modern, responsive, and interactive user interface. The app structure is organized into components, with each component serving a specific function to create a seamless user experience for language learners. The frontend leverages Expo to enable rapid development and easy deployment to both iOS and Android platforms.
+
+   -Key features like Text-to-Speech (TTS) are integrated into the app’s frontend, allowing users to hear spoken language prompts, improving their pronunciation and listening skills. The TTS functionality is implemented within the components, where text is dynamically converted into speech based on user input or game activity. This feature is particularly helpful in games like character recognition and word arrangement, where users need to match sounds with words.
+
+   -The app’s UI is designed to be intuitive, with easy navigation between the sign-up, login, and various game interfaces. The game components include interactive features such as fill-in-the-blanks and comprehension questions, which are enhanced by API calls to the Gemini API.
+
+   -Additionally, React Navigation is used for smooth transitions between screens, while state management is handled efficiently to ensure real-time updates of user progress and game status. The frontend is designed to provide a fun, gamified experience that motivates users to engage in language learning while interacting with the backend via API calls for dynamic content.
 
 ### Backend (Spring Boot)
-   - This module handles core functionalities, including API endpoints and data processing. The backend also manages complex Gemini API calls that power the app's language features, facilitating accurate, responsive language learning experiences. Built with Spring Boot, this backend is highly scalable, flexible, and reliable.
+   - The backend of our Language Learning App is designed with Spring Boot, providing a secure, scalable, and efficient foundation for language-learning activities. Core components such as AppConfig.java, JwtConstant.java, JwtProvider.java, and JwtTokenValidator.java handle crucial functionalities.
+
+   -The AppConfig.java file centralizes configuration settings, ensuring smooth integration across the backend. User authentication is managed using JWT (JSON Web Token) protocols, where JwtConstant.java defines essential constants, JwtProvider.java generates tokens and authenticates users, and JwtTokenValidator.java validates each request. This setup offers secure, role-based access control, maintaining data protection and session integrity.
+
+   -Our app also integrates with the Gemini API to enhance the language-learning experience, enabling activities like fill-in-the-blanks, comprehension questions, character recognition, and word arrangement games based on translation and speech. The backend efficiently manages requests to Gemini API, handling data retrieval and caching, which optimizes response times and reduces server load.
+
+   -Furthermore, the backend connects to a MySQL database that securely stores user profiles, learning progress, and game data. This architecture ensures high performance and reliability, supporting seamless interaction between the app’s front end and data management services. Overall, our backend is structured to provide a responsive and immersive experience for language learners.
 
 ### Database (MySQL)
    - The app uses a MySQL database to store and manage all user data, including profiles, progress, game data, and comprehensive language content. This structure ensures the data is organized, secure, and ready to scale as the user base grows. 
-
----
 
 ### Gemini API Calls in Python
    - The integration of Gemini API calls is done through Python, which handles complex language-learning functionalities at high speed and accuracy. Using Python for API calls allows us to leverage its rich set of libraries and clear syntax for seamless data parsing and manipulation, ensuring that the app delivers language content quickly and accurately. Each Gemini API call is fine-tuned to handle various user queries and returns precisely the data needed for personalized learning paths, whether users are working on vocabulary, grammar, or pronunciation.
