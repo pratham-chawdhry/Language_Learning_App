@@ -51,7 +51,7 @@ public class QuestionController {
             questionType = "Generate a unique, engaging fill-in-the-blank question for language learning. Each question should be between 6 to 10 words, have a specific context, and encourage understanding of common expressions, idioms, or conversational phrases. Return the question, options, and answer.";
         }
         if (questionType.equals("2")) {
-            questionType = "generate passage of limit 40 words and ask question give answer of limit 10 words";
+            questionType = "generate passage of from 30 to 40 words and ask question give answer of limit 10 words and 4 options as well";
         }
         if (questionType.equals("3")) {
             questionType = "give a sentence in the provided language max 10 words, just return sentence field, field should be sentence not any other";
