@@ -10,13 +10,13 @@ const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [sound, setSound] = useState(null);
   console.log(text, language);
-
   const generateFrenchAudio = async () => {
-    if (!text) {
+    console.log(textFrom)
+    if (!textFrom) {
+      console.log("text is empty")
       Alert.alert('Error', 'Please enter some text');
       return;
     }
-
     setIsLoading(true);
 
     try {
@@ -25,7 +25,7 @@ const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ textFrom }),
       });
 
       if (!response.ok) {

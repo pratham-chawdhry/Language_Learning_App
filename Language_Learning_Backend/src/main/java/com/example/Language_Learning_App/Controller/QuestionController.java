@@ -57,7 +57,7 @@ public class QuestionController {
             questionType = "give a sentence in the provided language max 10 words, just return sentence field, field should be sentence not any other";
         }
         if (questionType.equals("4")) {
-            questionType = "give a full sentence in the provided language and give a list of options in English to be arranged in the correct order to form the answer in english that is translation of given sentence. Only return the sentence, options, and answer , answer in string form. no other fields";
+            questionType = "generate a sentence in provided language and its translation in english, just return sentence and translation field not any other";
         }
         String url = pythonApiUrl + "/generate_question?questionType=" + questionType + "&language=" + language;
         // Send request and get response
@@ -174,8 +174,7 @@ public class QuestionController {
 
                 // Print or log the response fields
                 System.out.println("Sentence: " + arrangeQuestion.getSentence());
-                System.out.println("Options: " + arrangeQuestion.getOptions());
-                System.out.println("Answer: " + arrangeQuestion.getAnswer());
+                System.out.println("Options: " + arrangeQuestion.getTranslation());
 
                 // Return the parsed ArrangeQuestion object as a JSON response
                 return ResponseEntity.ok().body(objectMapper.writeValueAsString(arrangeQuestion));

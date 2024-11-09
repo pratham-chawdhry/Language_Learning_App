@@ -7,6 +7,5 @@ import lombok.Data;
 @Data
 public class ArrangeQuestion {
     private String sentence;
-    private List<String> options;
-    private String answer;
+    private String translation;
 }
