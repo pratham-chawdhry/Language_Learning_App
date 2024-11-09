@@ -5,6 +5,7 @@ import {useFonts} from 'expo-font'
 import { SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 import "../global.css"
+import { AuthProvider } from '../context/GlobalProvider'; 
 
 
 // import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -33,11 +34,12 @@ const RootLayout = () => {
     //   <Slot />
     //   <Text>Footer</Text>
     // </>
-
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="tabs" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="tabs" options={{ headerShown: false }} />
+      </Stack>
+    </AuthProvider>
   );
 }
 
