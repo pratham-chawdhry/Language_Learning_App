@@ -1,47 +1,21 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
 
-import { getCurrentUser } from "../lib/appwrite";
+const AuthContext = createContext();
 
-const GlobalContext = createContext();
-export const useGlobalContext = () => useContext(GlobalContext);
+export const useAuth = () => useContext(AuthContext);
 
-const GlobalProvider = ({ children }) => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+export const AuthProvider = ({ children }) => {
+  const [jwtToken, setJwtToken] = useState(null);
 
-  useEffect(() => {
-    getCurrentUser()
-      .then((res) => {
-        if (res) {
-          setIsLogged(true);
-          setUser(res);
-        } else {
-          setIsLogged(false);
-          setUser(null);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  // Function to store token
+  const storeToken = (token) => setJwtToken(token);
+
+  // Function to clear token (for logout)
+  const clearToken = () => setJwtToken(null);
 
   return (
-    <GlobalContext.Provider
-      value={{
-        isLogged,
-        setIsLogged,
-        user,
-        setUser,
-        loading,
-      }}
-    >
+    <AuthContext.Provider value={{ jwtToken, storeToken, clearToken }}>
       {children}
-    </GlobalContext.Provider>
+    </AuthContext.Provider>
   );
 };
-
-export default GlobalProvider;

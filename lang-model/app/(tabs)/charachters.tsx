@@ -88,7 +88,7 @@ const App = () => {
 
   const Item = ({ title, pronunciation }) => (
     <View style={[styles.item, { width: itemSize, height: itemSize }]}>
-      <TouchableOpacity onPress={() => generateAudio(pronunciation)}>
+      <TouchableOpacity onPress={() => generateAudio(title)}>
         <GiSpeaker style={styles.pronunciationIcon} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
