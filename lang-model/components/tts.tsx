@@ -5,6 +5,7 @@ import { fromByteArray } from 'base64-js';
 import { GiSpeaker } from 'react-icons/gi';
 
 const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
+  console.log(textFrom, languageFrom);
   const [text, setText] = useState(textFrom || '');
   const [language, setLanguage] = useState(languageFrom || 'english');
   const [isLoading, setIsLoading] = useState(false);
@@ -19,13 +20,19 @@ const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
     }
     setIsLoading(true);
 
+    console.log(textFrom, languageFrom, "translation ka bhosda");
+
     try {
       const response = await fetch('http://localhost:5000/generate-audio', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          
         },
-        body: JSON.stringify({ textFrom }),
+        body: JSON.stringify({
+          text: textFrom,
+          language: language,
+        }),      
       });
 
       if (!response.ok) {
@@ -65,7 +72,7 @@ const PlayHTTextToSpeech = ({ textFrom, languageFrom, IconStyle}) => {
           {isLoading ? (
             <ActivityIndicator size="small" color="#0000ff" />
           ) : (
-            <GiSpeaker style={IconStyle} size={30} color="black" />
+            <GiSpeaker style={IconStyle} size={30}/>
           )}
         </View>
       </TouchableOpacity>

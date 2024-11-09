@@ -1,36 +1,62 @@
 import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Dimensions, Pressable, TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import {useAuth } from '../../context/GlobalProvider';
 
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    id: '1',
+    language : 'french',
     title: 'French is one of only two languages spoken on all five continents, along with English.',
     translation: 'Français',
     source: 'https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg'
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    id: '2',
+    language : 'german',
     title: 'German is the official language in Germany, Austria, Liechtenstein, Luxembourg, and Switzerland.',
     translation: 'Deutsch',
     source: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg'
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    id: '3',
+    language : 'spanish',
     title: 'Spanish is the second most spoken language in the world: With around 485 million native speakers, Spanish is the second most spoken language in the world, after Mandarin.',
     translation: 'Español',
     source: 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg'
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d74',
+    id: '4',
+    language : 'portuguese',
     title: 'The Portuguese alphabet has 26 letters, the same as the English alphabet. However, the letters K, W, and Y were added in 2009 to help with foreign loanwords.',
     translation: 'Português',
     source: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg'
-  }
+  },
+  {
+    id: '5',
+    language : 'arabic',
+    title: 'Arabic is the official language of 24 countries.',
+    translation: 'العربية',
+    source : 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Flag_of_the_Arab_League.svg'
+  },
+  {
+    id: '6',
+    language : 'russian',
+    title : 'Russian has fewer words than English, possibly because it hasn\'t absorbed as many words from other languages.',
+    translation: 'Русский',
+    source: 'https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg'
+  },
 ];
 
-const Item = ({ title, translation, source }) => (
-  <View style={styles.card}>
+const Item = ({ title, translation, source, id, language}) => {
+  const { changeLanguage } = useAuth();
+
+  return (
+  <TouchableOpacity onPress = {() => {
+    changeLanguage(language)
+    console.log(language);
+  }
+  } style={styles.card}>
     <View style={styles.content}>
       <Image source={{ uri: source }} style={styles.image} />
       <Text style={styles.translation}>{translation}</Text>
@@ -57,24 +83,29 @@ const Item = ({ title, translation, source }) => (
         />
       </Svg>
     </View>
-  </View>
-);
+  </TouchableOpacity>
+  )
+}
 
-const Home = () => (
-  <View style={styles.container}>
-    <FlatList
-      data={DATA}
-      renderItem={({ item }) => (
-        <Item
-          title={item.title}
-          source={item.source}
-          translation={item.translation}
-        />
-      )}
-      keyExtractor={item => item.id}
-    />
-  </View>
-);
+const Home = () => {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => (
+          <Item
+            title={item.title}
+            source={item.source}
+            translation={item.translation}
+            id = {item.id}
+            language = {item.language}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
 
 const { width } = Dimensions.get('window');
 

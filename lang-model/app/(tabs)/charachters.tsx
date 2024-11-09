@@ -4,13 +4,14 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { GiSpeaker } from 'react-icons/gi';
 import { Audio } from 'expo-av';
 import { fromByteArray } from 'base64-js';
+import { useAuth} from '../../context/GlobalProvider';
 
 const screenWidth = Dimensions.get('window').width;
 const itemSize = 110; // Width based on screen width (3 items per row with spacing)
-const API_URL = 'http://localhost:8080/question/generateCharacters?language=french';
-const TOKEN = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzEwODgwMDIsImV4cCI6MTczMTE3NDQwMiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.HqdEiYa1B_A3jI33OZRwTPlxoaH5oKOBDTpS-Eu0WWyH7CDaseVeDlb-_rA6pgb_';
 
 const App = () => {
+  const {language, jwtToken} = useAuth();
+  const API_URL = `http://localhost:8080/question/generateCharacters?language=${language}`;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sound, setSound] = useState(null);
@@ -21,7 +22,7 @@ const App = () => {
         const response = await fetch(API_URL, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${TOKEN}`,
+            'Authorization': `Bearer ${jwtToken}`,
             'Content-Type': 'application/json',
           },
         });
@@ -40,9 +41,9 @@ const App = () => {
     };
 
     fetchData();
-  }, []);
+  }, [jwtToken, language]);
 
-  const generateAudio = async (text, language = 'french') => {
+  const generateAudio = async (text, lang = language) => {
     if (!text) {
       Alert.alert('Error', 'Text is missing for audio generation');
       return;
@@ -56,7 +57,7 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text, language }),
+        body: JSON.stringify({ text : text, language: lang }),
       });
 
       if (!response.ok) {
