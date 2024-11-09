@@ -102,7 +102,7 @@ const Home = () => {
                 Already have an account?
                 <Text
                   style={{ color: '#7e3ffb' }}
-                  onPress={() => router.push('/login')}
+                  onPress={() => router.push('/sign-in')}
                 >
                   {' '}
                   Sign in

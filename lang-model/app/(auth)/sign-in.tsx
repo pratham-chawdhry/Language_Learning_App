@@ -17,8 +17,6 @@ const Home = () => {
   const [form, setForm] = useState({
     email: '',
     password: '',
-    username: '',
-    role: 'ROLE_USER',
   });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -27,10 +25,10 @@ const Home = () => {
   // Function to handle Sign Up
   const handleSignUp = async () => {
     setIsLoading(true);
-    const { email, password, username, role } = form;
+    const { email, password} = form;
 
     // Validating the input fields
-    if (!email || !password || !username) {
+    if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       setIsLoading(false);
       return;
@@ -42,7 +40,7 @@ const Home = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, username, role }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -76,12 +74,12 @@ const Home = () => {
               handleTextChange={(e) => setForm({ ...form, email: e })}
             />
 
-            <TextField
+            {/* <TextField
               text="Username"
               placeholderTextColor="#7B7B8B"
               placeholderText="Enter your username"
               handleTextChange={(e) => setForm({ ...form, username: e })}
-            />
+            /> */}
 
             <TextField
               text="Password"
@@ -91,7 +89,7 @@ const Home = () => {
             />
 
             <CustomButton
-              title="Sign up"
+              title="Sign in"
               handlePress={handleSignUp}
               containerStyles="w-full mt-7"
               isLoading={isLoading}
@@ -102,7 +100,7 @@ const Home = () => {
                 Do not have an account?
                 <Text
                   style={{ color: '#7e3ffb' }}
-                  onPress={() => router.push('/login')}
+                  onPress={() => router.push('/sign-up')}
                 >
                   {' '}
                   Sign up
