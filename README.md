@@ -69,3 +69,28 @@ Welcome to the **Language Learning App**! This application provides an engaging 
       ```bash
       cd lang-model
       npx expo start -c
+
+## Architecture Overview
+
+### Frontend (React Native)
+   - This module contains all UI components, navigation flows, and front-end logic, providing users with a seamless, engaging experience. With React Native, the app is cross-platform, ensuring a consistent look and feel on both iOS and Android devices. 
+
+### Backend (Spring Boot)
+   - This module handles core functionalities, including API endpoints and data processing. The backend also manages complex Gemini API calls that power the app's language features, facilitating accurate, responsive language learning experiences. Built with Spring Boot, this backend is highly scalable, flexible, and reliable.
+
+### Database (MySQL)
+   - The app uses a MySQL database to store and manage all user data, including profiles, progress, game data, and comprehensive language content. This structure ensures the data is organized, secure, and ready to scale as the user base grows. 
+
+---
+
+### Gemini API Calls in Python
+   - The integration of Gemini API calls is done through Python, which handles complex language-learning functionalities at high speed and accuracy. Using Python for API calls allows us to leverage its rich set of libraries and clear syntax for seamless data parsing and manipulation, ensuring that the app delivers language content quickly and accurately. Each Gemini API call is fine-tuned to handle various user queries and returns precisely the data needed for personalized learning paths, whether users are working on vocabulary, grammar, or pronunciation.
+
+   - The Python integration offers error handling and logging features that add to the robustness, ensuring a smooth learning journey for every user. This layer of precision enhances the app’s interactivity by returning data in near real-time, making it feel like users are conversing directly with the language engine.
+
+### Proxy Server (Node.js)
+   - A Node.js proxy server acts as the bridge between the frontend and backend, effectively managing and optimizing requests. By using Node.js, we ensure that data transfer is both quick and secure, with minimized latency even for more complex, data-intensive calls. This server handles load balancing, caching, and cross-origin requests seamlessly, enhancing the app’s responsiveness.
+
+   - The proxy server’s efficiency shines in handling Gemini API calls as it routes requests and responses effortlessly, allowing the backend to focus on heavy processing tasks. By isolating the proxy in Node.js, we also maintain a clear separation of concerns, making the entire system more modular, secure, and easier to debug. With real-time data streaming capabilities, this proxy ensures that every interaction with the Gemini API is delivered as efficiently as possible, elevating the user’s learning experience.
+
+Together, these components create a robust, high-performance architecture designed to support an interactive, data-rich language learning platform.
