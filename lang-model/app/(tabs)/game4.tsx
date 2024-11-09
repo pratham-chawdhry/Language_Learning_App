@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import PlayHTTextToSpeech from '../../components/tts';
+import { useAuth } from '../../context/GlobalProvider';
 
 const JumbledSentence = () => {
   const [selectedWords, setSelectedWords] = useState([]);
@@ -8,11 +9,13 @@ const JumbledSentence = () => {
   const [translation, setTranslation] = useState("");
   const [targetSentence, setTargetSentence] = useState("");
 
+  const { jwtToken } = useAuth();
+
   useEffect(() => {
     fetch('http://localhost:8080/question/generateQuestion?questionType=4&language=french', {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzExMDk2NTQsImV4cCI6MTczMTE5NjA1NCwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.nWmJQ3sa-AgaNqIoHVWjXxA_E48dLeQEJtB1CrJJUpn9GWNDgfW_mIYigaYQgbA-',
+        'Authorization': `Bearer ${jwtToken}`,
         'Content-Type': 'application/json'
       }
     })
@@ -107,21 +110,38 @@ const JumbledSentence = () => {
 };
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',  // Make the container take full screen
+  },
   container: {
+    // flex: 1,
+    // padding: 20,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: '#f5f5f5',
+    // position: 'absolute',
+    // height: '100%',
     flex: 1,
     paddingTop: 20,
     paddingBottom: 20,
-    paddingHorizontal: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#f5f5f5',
     flexDirection: 'column',
   },
-  titleContainer: {
+  selectedSentenceContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5,
+    flexWrap: 'wrap',
+    marginBottom: 20,
+    // backgroundColor: '#e0e0e0',
+    width: '100%',
+    padding: 10,
+    borderRadius: 8,
+    gap: 5, /* Controls both column and row gaps */
+    rowGap: 0,
   },
   title: {
     fontSize: 24,
@@ -130,22 +150,39 @@ const styles = StyleSheet.create({
   sentenceContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    // minHeight: 192,
     marginBottom: 20,
     padding: 10,
     borderRadius: 8,
     justifyContent: 'center',
+    position: 'relative', // Make the word bank position absolute
+    top: 0,  
+    // alignItems: 'center',
+    // backgroundColor: '#e0e0e0',
   },
-  selectedSentenceContainer: {
+  selectedWordsContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
+    backgroundColor: '#e0e0e0',
     width: '100%',
     padding: 10,
     borderRadius: 8,
-    gap: 5,
+    position: 'relative',
+    top : 192,
   },
   word: {
-    fontSize: 15,
+    fontSize: 8,
+    color: '#fff',
+    backgroundColor: '#4F1DAE',
+    padding: 10,
+    margin: 5,
+    borderRadius: 8,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+  },
+  selectedWord: {
+    fontSize: 18,
     color: '#fff',
     backgroundColor: '#4F1DAE',
     padding: 10,
@@ -157,8 +194,13 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   bottomContainer: {
-    flexGrow: 1,
-    justifyContent: 'flex-end',
+    flexGrow: 1,  // Allow the middle content to take up available space
+    justifyContent: 'flex-end',  // Push the button to the bottom
+    width: '100%',
+  },
+  buttonsContainer: {
+    flexGrow: 1,  // Allow the middle content to take up available space
+    justifyContent: 'flex-end',  // Push the button to the bottom
     width: '100%',
   },
   button: {
@@ -173,18 +215,28 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   wordBox: {
-    borderWidth: 1,
+
+    borderWidth: 1, // Horizontal line effect
+
     borderColor: '#7e3ffb',
+
     borderRadius: 8,
+
     padding: 10,
+
     margin: 5,
     height: 40,
+
     backgroundColor: '#fff',
+
     alignItems: 'center',
+
     justifyContent: 'center',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+
   },
-  pronunciationIcon: {
-    color: '#4F1DAE',
+  pronounciationIcon: {
+    color: ' #4F1DAE',
     fontSize: 20,
   },
 });

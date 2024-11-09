@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useAuth } from '../../context/GlobalProvider'; 
 
 const JumbledSentence = () => {
     const [fillSentence, setFillSentence] = useState("");
@@ -14,7 +15,7 @@ const JumbledSentence = () => {
       marginTop: 10,
   };
 
-    const token = "eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzEwOTk3NDMsImV4cCI6MTczMTE4NjE0MywiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.ziB-N0V29qECkCHzx_yF6hEUfYyZpHSuMOj4BBMBJZWBfWC8woHW1DKS45PLcBhr";
+    const { jwtToken } = useAuth();
 
     useEffect(() => {
         const fetchQuestion = async () => {
@@ -24,7 +25,7 @@ const JumbledSentence = () => {
                     {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${token}`,
+                            'Authorization': `Bearer ${jwtToken}`,
                             'Content-Type': 'application/json',
                         }
                     }
@@ -165,22 +166,135 @@ const JumbledSentence = () => {
 //     },
 // });
 const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      padding: 16,
-      backgroundColor: '#f9f9f9',
-  },
-  title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-      textAlign: 'center',
-  },
-  contentContainer: {
-      flex: 1,
-      justifyContent: 'center', // Centers feedback message vertically
-      alignItems: 'center', // Centers feedback message horizontally
-  },
+        contentContainer: {
+          flex: 1,
+          backgroundColor: '#f5f5f5',  // Make the container take full screen
+        },
+        container: {
+          // flex: 1,
+          // padding: 20,
+          // alignItems: 'center',
+          // justifyContent: 'center',
+          // backgroundColor: '#f5f5f5',
+          // position: 'absolute',
+          // height: '100%',
+          flex: 1,
+          paddingTop: 20,
+          paddingBottom: 20,
+          paddingLeft: 5,
+          paddingRight: 5,
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          backgroundColor: '#f5f5f5',
+          flexDirection: 'column',
+        },
+        selectedSentenceContainer: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          marginBottom: 20,
+          // backgroundColor: '#e0e0e0',
+          width: '100%',
+          padding: 10,
+          borderRadius: 8,
+          gap: 5, /* Controls both column and row gaps */
+          rowGap: 0,
+        },
+        title: {
+            fontSize: 24,
+            fontWeight: 'bold',
+          },
+          sentenceContainer: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            // minHeight: 192,
+            marginBottom: 20,
+            padding: 10,
+            borderRadius: 8,
+            justifyContent: 'center',
+            position: 'relative', // Make the word bank position absolute
+            top: 0,  
+            // alignItems: 'center',
+            // backgroundColor: '#e0e0e0',
+          },
+          selectedWordsContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 20,
+            backgroundColor: '#e0e0e0',
+            width: '100%',
+            padding: 10,
+            borderRadius: 8,
+            position: 'relative',
+            top : 192,
+          },
+          word: {
+            fontSize: 8,
+            color: '#fff',
+            backgroundColor: '#4F1DAE',
+            padding: 10,
+            margin: 5,
+            borderRadius: 8,
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          },
+          selectedWord: {
+            fontSize: 18,
+            color: '#fff',
+            backgroundColor: '#4F1DAE',
+            padding: 10,
+            margin: 5,
+            borderRadius: 8,
+          },
+          wordText: {
+            fontSize: 15,
+            color: '#fff',
+          },
+          bottomContainer: {
+            flexGrow: 1,  // Allow the middle content to take up available space
+            justifyContent: 'flex-end',  // Push the button to the bottom
+            width: '100%',
+          },
+          buttonsContainer: {
+            flexGrow: 1,  // Allow the middle content to take up available space
+            justifyContent: 'flex-end',  // Push the button to the bottom
+            width: '100%',
+          },
+          button: {
+            backgroundColor: '#7e3ffb',
+            padding: 10,
+            margin: 5,
+            borderRadius: 8,
+            alignItems: 'center',
+          },
+          buttonText: {
+            fontSize: 16,
+            color: '#fff',
+          },
+          wordBox: {
+        
+            borderWidth: 1, // Horizontal line effect
+        
+            borderColor: '#7e3ffb',
+        
+            borderRadius: 8,
+        
+            padding: 10,
+        
+            margin: 5,
+            height: 40,
+        
+            backgroundColor: '#fff',
+        
+            alignItems: 'center',
+        
+            justifyContent: 'center',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        
+          },
+          pronounciationIcon: {
+            color: ' #4F1DAE',
+            fontSize: 20,
+          },
   sentence: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -196,40 +310,6 @@ const styles = StyleSheet.create({
       borderBottomColor: '#000',
       marginHorizontal: 4,
       minWidth: 50,
-  },
-  wordBox: {
-      padding: 4,
-  },
-  wordText: {
-      fontSize: 18,
-  },
-  selectedSentenceContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      marginVertical: 10,
-  },
-  word: {
-      backgroundColor: '#4F1DAE',
-      borderRadius: 5,
-      padding: 8,
-      margin: 5,
-  },
-  buttonText: {
-      color: '#fff',
-      fontSize: 16,
-      textAlign: 'center',
-  },
-  bottomContainer: {
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      paddingVertical: 10,
-  },
-  button: {
-      backgroundColor: '#4F1DAE',
-      paddingVertical: 10,
-      width: '100%', // Makes button span the full width of the screen
-      borderRadius: 5,
   },
 });
 

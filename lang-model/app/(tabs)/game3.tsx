@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { useAuth } from '../../context/GlobalProvider'; 
 
 const JumbledSentence = () => {
     const [passage, setPassage] = useState("");
@@ -15,12 +16,14 @@ const JumbledSentence = () => {
         fetchQuestionData();
     }, []);
 
+    const { jwtToken } = useAuth();
+
     const fetchQuestionData = async () => {
         try {
             const response = await axios.get('http://localhost:8080/question/generateQuestion', {
                 params: { questionType: "2", language: "english" },
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzEwNTEwMzEsImV4cCI6MTczMTEzNzQzMSwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.KAXDgTZ1fN0zGkGMLE_3rXKFJZbTG0ashpC6XeFK45KiwtmwcOSZXCQPwU3EHXOU`
+                    Authorization: `Bearer ${jwtToken}`,
                 }
             });
             const data = response.data;

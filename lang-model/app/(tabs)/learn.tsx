@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
+import { useAuth } from '../../context/GlobalProvider'; 
 
 const JumbledSentence = () => {
   const [selectedWords, setSelectedWords] = useState([]);
@@ -8,12 +9,15 @@ const JumbledSentence = () => {
   const [targetSentence, setTargetSentence] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const { jwtToken } = useAuth();
+  console.log("Token:", jwtToken);
+
   // Fetch data from API on component mount
   useEffect(() => {
     fetch('http://localhost:8080/question/generateQuestion?questionType=4&language=french', {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MzExMDk2NTQsImV4cCI6MTczMTE5NjA1NCwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJlbWFpbCI6Imxhd2RhIn0.nWmJQ3sa-AgaNqIoHVWjXxA_E48dLeQEJtB1CrJJUpn9GWNDgfW_mIYigaYQgbA-',
+        'Authorization': `Bearer ${jwtToken}`,
         'Content-Type': 'application/json'
       }
     })
