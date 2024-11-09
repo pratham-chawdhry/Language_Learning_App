@@ -69,7 +69,10 @@ Welcome to the **Language Learning App**! This application provides an engaging 
       ```bash
       cd lang-model
       npx expo start -c
-
+     - **Proxy Server:** To set up the proxy-Server
+      ```bash
+         cd proxy-server
+         node server.mjs
 ## Architecture Overview
 
 ### Frontend (React Native)
