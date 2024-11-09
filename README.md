@@ -64,10 +64,8 @@ Welcome to the **Language Learning App**! This application provides an engaging 
    -Migrate initial schema if available or start with the Spring Boot project which may auto-configure tables.
    
 7. **Running The App**
-     -**Start the backend server:** Just click in the run button after navigating to the LanguageLearningAppApplicationTests.java
-     -**Start the frontend React Native app**:
-     ```bash
+     - **Start the backend server**: Just click in the run button after navigating to the LanguageLearningAppApplicationTests.java
+     - **Start the frontend React Native app**: Multiple games implemented to make language learning fun and interactive. Each game is designed to reinforce vocabulary, grammar, and pronunciation in a dynamic way.
+      ```bash
       cd lang-model
       npx expo start -c
-
-9. 
