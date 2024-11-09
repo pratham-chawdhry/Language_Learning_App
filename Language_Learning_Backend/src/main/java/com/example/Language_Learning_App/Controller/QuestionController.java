@@ -267,7 +267,7 @@ public class QuestionController {
             @RequestHeader("Authorization") String jwt) {
         try {
             User user = userService.FindUserByJwt(jwt);
-            User user1 = userService.UpdateExpereince(user.getEmail(), testEndRequest.getNoofCorrectAnswers() * 10);
+            User user1 = userService.UpdateExpereince(user.getEmail(), (long) (testEndRequest.getNoofCorrectAnswers() * 10 - 10/Math.pow(2,testEndRequest.getNoofAttemptsForCorrectAnswer() - 1)));
             return ResponseEntity.ok().body(user1);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

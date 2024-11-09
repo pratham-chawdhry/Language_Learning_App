@@ -17,10 +17,10 @@ export default function learn() {
   }, [questionNumber]);
 
   const games = [
-    // <GameOne />,
+    <GameOne />,
     <GameTwo />,
     <GameThree />,
-    // <GameFour />,
+    <GameFour />,
   ];
 
   return (

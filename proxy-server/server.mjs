@@ -30,6 +30,8 @@ app.post('/generate-audio', async (req, res) => {
     language: language || 'french'
   });
 
+  console.log(body, text, language);
+
   try {
     const response = await fetch(PLAY_HT_API_URL, {
       method: 'POST',

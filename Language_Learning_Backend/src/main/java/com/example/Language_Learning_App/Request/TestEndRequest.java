@@ -8,4 +8,6 @@ import lombok.Data;
 public class TestEndRequest {
     @JsonProperty("NoofCorrectAnswers")
     private Long NoofCorrectAnswers;
+    @JsonProperty("NoofAttemptsForCorrectAnswer")
+    private Long NoofAttemptsForCorrectAnswer;
 }

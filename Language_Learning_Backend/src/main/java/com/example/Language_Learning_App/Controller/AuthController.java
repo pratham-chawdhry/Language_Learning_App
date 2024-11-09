@@ -54,6 +54,7 @@ public class AuthController {
         user2.setEmail(user.getEmail());
         user2.setUsername(user.getUsername());
         user2.setRole(user.getRole());
+        user2.setExperiencePoints(20L);
         System.out.println(user.getPassword());
         user2.setPassword(passwordEncoder.encode(user.getPassword()));
         user2.setActive(true);
